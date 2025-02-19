@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal Finance Visualizer
 
-## Getting Started
+A simple web application to track and visualize personal finances. This app allows users to manage their transactions, set monthly budgets, and visualize their spending patterns through charts.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Transaction Management
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Add, Edit, and Delete Transactions**: Users can add new transactions with details such as amount, date, and description. They can also edit or delete existing transactions.
+- **Transaction List View**: A list view displaying all transactions, including details such as date, amount, and description.
+- **Basic Form Validation**: Ensures that the necessary fields like amount, date, and description are correctly filled before submission.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Charts and Visualizations
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Monthly Expenses Bar Chart**: A bar chart displaying the total expenses per month.
+- **Category-wise Pie Chart**: A pie chart showing how total expenses are distributed across different predefined categories (e.g., Food, Entertainment, Utilities).
+- **Budget vs Actual Comparison**: A chart comparing the budgeted amount for each category against the actual spending.
+- **Spending Insights**: A section showing total expenses, category breakdown, and recent transactions.
 
-## Learn More
+### Dashboard and Summary
 
-To learn more about Next.js, take a look at the following resources:
+- **Dashboard Overview**: A dashboard providing a snapshot of your finances with summary cards displaying:
+  - Total Expenses
+  - Category Breakdown
+  - Most Recent Transactions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Budgeting
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Set Monthly Category Budgets**: Users can set and manage monthly budgets for categories like Food, Entertainment, and Utilities.
+- **Track Budget vs Actual**: A chart comparing the user’s budget with actual spending for each category.
 
-## Deploy on Vercel
+## Technologies Used
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Frontend**: Next.js, React, shadcn/ui, Recharts
+- **Backend**: MongoDB (for storing transaction data and budgets)
+- **Design**: Tailwind CSS (for responsive and modern UI)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Installation
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** and **npm** (Node Package Manager)
+- **MongoDB** (or use MongoDB Atlas for a cloud database solution)
+
+### Steps to Set Up the Project Locally
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/finance-visualizer.git
+   cd finance-visualizer
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Set up MongoDB:
+
+   - If you're using a local MongoDB database, ensure it's running on `localhost:27017`.
+   - For MongoDB Atlas, update the connection string in the `dbConfig` file with your cloud database details.
+
+4. Run the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+   The application should now be running at `http://localhost:3000`.
+
+### Accessing the Application
+
+Once the app is running, open your browser and navigate to `http://localhost:3000` to start using the Personal Finance Visualizer.
+
+## Usage
+
+- **Add/Edit/Delete Transactions**: Use the form to add new transactions and edit or delete existing ones.
+- **View Monthly Expenses**: See your spending for each month visualized in the monthly expenses bar chart.
+- **Set and Track Budgets**: Set a budget for each category and track how much you've spent compared to your budget.
+- **View Spending Insights**: Get insights about your total expenses, category breakdown, and recent transactions.
+
+## API Endpoints
+
+### `/api/transactions`
+
+- **GET**: Fetch all transactions.
+
+  Example response:
+
+  ```json
+  [
+    {
+      "description": "Grocery shopping",
+      "amount": 50,
+      "date": "2024-02-15T00:00:00Z"
+    },
+    {
+      "description": "Movie tickets",
+      "amount": 20,
+      "date": "2024-02-18T00:00:00Z"
+    }
+  ]
+  ```

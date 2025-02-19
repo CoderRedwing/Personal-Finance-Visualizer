@@ -1,6 +1,6 @@
 import { dbConnect } from "@/dbConfig/dbConfig";
 import userTransaction from "@/models/userTransaction"
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
     await dbConnect();
@@ -11,6 +11,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         if (!transaction) return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
         return NextResponse.json(transaction, { status: 200 });
     } catch (error) {
+        console.error("Error fetching transaction:", error);
         return NextResponse.json({ error: "Failed to fetch transaction" }, { status: 500 });
     }
 }
@@ -25,6 +26,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         if (!updatedTransaction) return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
         return NextResponse.json(updatedTransaction, { status: 200 });
     } catch (error) {
+        console.error("Error Failed to update transaction:", error);
         return NextResponse.json({ error: "Failed to update transaction" }, { status: 500 });
     }
 }
@@ -35,9 +37,12 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
 
     try {
         const deletedTransaction = await userTransaction.findByIdAndDelete(id);
-        if (!deletedTransaction) return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
+        if (!deletedTransaction) {
+            return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
+        }
         return NextResponse.json({ message: "Transaction deleted" }, { status: 200 });
     } catch (error) {
+        console.error("Error Failed to delete transaction:",error)
         return NextResponse.json({ error: "Failed to delete transaction" }, { status: 500 });
     }
 }

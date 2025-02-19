@@ -36,7 +36,7 @@ export default function TransactionList() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-w-4xl mx-auto p-6 mt-6">
         <TransactionForm onTransactionAdded={fetchTransactions}
       transactionToEdit={transactionToEdit}    />
 

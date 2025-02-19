@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import {TransactionFormData} from '../app/types/index'
 
 // Define the validation schema using Zod
 const transactionSchema = z.object({
@@ -44,7 +45,7 @@ export default function TransactionForm({ onTransactionAdded, transactionToEdit 
     }
   }, [transactionToEdit, reset]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: TransactionFormData) => {
     try {
       if (transactionToEdit && transactionToEdit._id) {
         await axios.put(`/api/transactions/${transactionToEdit._id}`, data); // Update transaction
