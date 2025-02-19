@@ -2,15 +2,12 @@ import { dbConnect } from "@/dbConfig/dbConfig";
 import userTransaction from "@/models/userTransaction";
 import { NextResponse, NextRequest } from "next/server";
 
-interface Params {
-  params: { id: string };
-}
 
-export async function GET(req: NextRequest, { params }: Params) {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     try {
         await dbConnect();
-        
-        const { id } = params; 
+
+        const { id } = params;
 
         if (!id) {
             return NextResponse.json({ error: "Transaction ID is required" }, { status: 400 });
@@ -29,10 +26,11 @@ export async function GET(req: NextRequest, { params }: Params) {
     }
 }
 
-export async function PUT(req: NextRequest, { params }: Params) {
+
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
     try {
         await dbConnect();
-        const { id } = params; 
+        const { id } = params;
         const { amount, description, date } = await req.json();
 
         const updatedTransaction = await userTransaction.findByIdAndUpdate(
@@ -52,10 +50,11 @@ export async function PUT(req: NextRequest, { params }: Params) {
     }
 }
 
-export async function DELETE(req: NextRequest, { params }: Params) {
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
     try {
         await dbConnect();
-        const { id } = params; 
+        const { id } = params;
 
         if (!id) {
             return NextResponse.json({ error: "Transaction ID is required" }, { status: 400 });
