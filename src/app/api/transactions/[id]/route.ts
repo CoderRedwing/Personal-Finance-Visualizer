@@ -2,8 +2,12 @@ import { dbConnect } from "@/dbConfig/dbConfig";
 import userTransaction from "@/models/userTransaction";
 import { NextResponse, NextRequest } from "next/server";
 
+interface Params {
+  params: { id: string };
+}
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+
+export async function GET(req: NextRequest, { params }: Params) {
     try {
         await dbConnect();
 
@@ -27,7 +31,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: Params) {
     try {
         await dbConnect();
         const { id } = params;
@@ -51,7 +55,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: Params) {
     try {
         await dbConnect();
         const { id } = params;
