@@ -1,14 +1,25 @@
 import { dbConnect } from "@/dbConfig/dbConfig";
 import userTransaction from "@/models/userTransaction"
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-    await dbConnect();
-    const { id } = params;
-
+export async function GET(req: NextRequest) {
     try {
+        await dbConnect();
+        
+        // Extract ID from URL
+        const urlParts = req.nextUrl.pathname.split("/");
+        const id = urlParts[urlParts.length - 1]; // Extract ID from URL path
+        
+        if (!id) {
+            return NextResponse.json({ error: "Transaction ID is required" }, { status: 400 });
+        }
+
         const transaction = await userTransaction.findById(id);
-        if (!transaction) return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
+
+        if (!transaction) {
+            return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
+        }
+
         return NextResponse.json(transaction, { status: 200 });
     } catch (error) {
         console.error("Error fetching transaction:", error);
