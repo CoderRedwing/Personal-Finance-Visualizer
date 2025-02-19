@@ -1,15 +1,17 @@
 import { dbConnect } from "@/dbConfig/dbConfig";
-import userTransaction from "@/models/userTransaction"
+import userTransaction from "@/models/userTransaction";
 import { NextResponse, NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
+interface Params {
+  params: { id: string };
+}
+
+export async function GET(req: NextRequest, { params }: Params) {
     try {
         await dbConnect();
         
-        // Extract ID from URL
-        const urlParts = req.nextUrl.pathname.split("/");
-        const id = urlParts[urlParts.length - 1]; // Extract ID from URL path
-        
+        const { id } = params; 
+
         if (!id) {
             return NextResponse.json({ error: "Transaction ID is required" }, { status: 400 });
         }
@@ -27,33 +29,47 @@ export async function GET(req: NextRequest) {
     }
 }
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
-    await dbConnect();
-    const { id } = params;
-    const { amount, description, date } = await req.json();
-
+export async function PUT(req: NextRequest, { params }: Params) {
     try {
-        const updatedTransaction = await userTransaction.findByIdAndUpdate(id, { amount, description, date }, { new: true });
-        if (!updatedTransaction) return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
+        await dbConnect();
+        const { id } = params; 
+        const { amount, description, date } = await req.json();
+
+        const updatedTransaction = await userTransaction.findByIdAndUpdate(
+            id,
+            { amount, description, date },
+            { new: true }
+        );
+
+        if (!updatedTransaction) {
+            return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
+        }
+
         return NextResponse.json(updatedTransaction, { status: 200 });
     } catch (error) {
-        console.error("Error Failed to update transaction:", error);
+        console.error("Error updating transaction:", error);
         return NextResponse.json({ error: "Failed to update transaction" }, { status: 500 });
     }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-    const { id } = await params;
-    await dbConnect();
-
+export async function DELETE(req: NextRequest, { params }: Params) {
     try {
+        await dbConnect();
+        const { id } = params; 
+
+        if (!id) {
+            return NextResponse.json({ error: "Transaction ID is required" }, { status: 400 });
+        }
+
         const deletedTransaction = await userTransaction.findByIdAndDelete(id);
+
         if (!deletedTransaction) {
             return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
         }
-        return NextResponse.json({ message: "Transaction deleted" }, { status: 200 });
+
+        return NextResponse.json({ message: "Transaction deleted successfully" }, { status: 200 });
     } catch (error) {
-        console.error("Error Failed to delete transaction:",error)
+        console.error("Error deleting transaction:", error);
         return NextResponse.json({ error: "Failed to delete transaction" }, { status: 500 });
     }
 }
